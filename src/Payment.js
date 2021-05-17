@@ -13,6 +13,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from 'react-router-dom';
 
+//Material UI styling
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -46,15 +47,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Payment() {
-
+  //useState to capture data in form
     const [dateInfo, setDateInfo] = useState('');
     const [paymentTypeId, setPaymentTypeId] = useState('');
     const [patientId, setPatientId] = useState('');
     const [paymentAmount, setPaymentAmount] = useState('');
-
+  
+    //function to send info from form into to server
     const handleSubmit = e => {
         e.preventDefault();
-    
         if (paymentAmount <= 0) {
             console.log('Payment Amount has to be greater than 0.')
             alert('Payment Amount Has To Be Greater Than 0')
@@ -70,17 +71,17 @@ export default function Payment() {
     
         axios.post('http://localhost:8080/createpayment', payment)
             .then(response => {
-                console.log(response.data)
-            })
+              console.log(response.data)
+              alert('Payment Submitted!')
+           })
             .catch(err => {
-                // what now?
-                console.log(err)
+                alert(err)
             });
-        console.log(payment)
       };
 
   const classes = useStyles();
 
+  /*display frontend interface styling*/  
   return (
  <div>     
 <AppBar position="static" style={{ backgroundColor: "#23395d"
@@ -90,19 +91,21 @@ export default function Payment() {
         Doctor Office Management System
       </Typography>
       
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Features
-        </Typography>
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Enterprise
-        </Typography>
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Support
-        </Typography>
-      
-      <Button href="#" color="primary" variant="outlined" className={classes.typography}>
-        Login
-      </Button>
+      <Link to="/create" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Create Appointment Record
+            </Typography>
+            </Link>
+            <Link to="/view" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Search Record
+            </Typography>
+            </Link>
+            <Link to="/" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Home
+            </Typography>
+            </Link>
     </Toolbar>
   </AppBar>
     <Container component="main" maxWidth="xs">

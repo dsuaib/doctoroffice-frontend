@@ -7,8 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import CardActions from '@material-ui/core/CardActions';
 import Fab from '@material-ui/core/Fab'
 import { Link } from 'react-router-dom';
 
@@ -35,37 +33,8 @@ const useStyles = makeStyles((theme) => ({
   heroContent: {
     padding: theme.spacing(8, 0, 6),
   },
-
-  footer: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing(8),
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: theme.spacing(6),
-      paddingBottom: theme.spacing(6),
-    },
-  },
 }));
 
-const footers = [
-  {
-    title: 'Company',
-    description: ['Team', 'History', 'Contact us', 'Locations'],
-  },
-  {
-    title: 'Features',
-    description: ['Cool stuff', 'Random feature', 'Team feature', 'Developer stuff', 'Another one'],
-  },
-  {
-    title: 'Resources',
-    description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
-  },
-  {
-    title: 'Legal',
-    description: ['Privacy policy', 'Terms of use'],
-  },
-];
 
 export default function App() {
   const classes = useStyles();
@@ -79,20 +48,22 @@ export default function App() {
           <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
             Doctor Office Management System
           </Typography>
-          
+            <Link to="/create" style={{ textDecoration:'none', color:'#FFF'}}>
             <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-              Features
+              Create Appointment Record
             </Typography>
+            </Link>
+            <Link to="/payment" style={{ textDecoration:'none', color:'#FFF'}}>
             <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-              Enterprise
+              Submit Payment
             </Typography>
+            </Link>
+            <Link to="/view" style={{ textDecoration:'none', color:'#FFF'}}>
             <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-              Support
+            Search Record
             </Typography>
-          
-          <Button href="#" style={{ textDecoration: 'none', color: '#FFF'}} variant="outlined" className={classes.typography}>
-            Home
-          </Button>
+            </Link>
+
         </Toolbar>
       </AppBar>
       {/* Hero unit */}
@@ -129,30 +100,7 @@ export default function App() {
           </Container>
         </div>
       {/* End hero unit */}
-            {/* Footer */}
-      <Container maxWidth="md" component="footer" className={classes.footer}>
-        <Grid container spacing={4} justify="space-evenly">
-          {footers.map((footer) => (
-            <Grid item xs={6} sm={3} key={footer.title}>
-              <Typography variant="h6" color="textPrimary" gutterBottom>
-                {footer.title}
-              </Typography>
-              <ul>
-                {footer.description.map((item) => (
-                  <li key={item}>
-                    <Typography href="#" variant="subtitle1" color="textSecondary">
-                      {item}
-                    </Typography>
-                  </li>
-                ))}
-              </ul>
-            </Grid>
-          ))}
-        </Grid>
-        <Box mt={5}>
-        </Box>
-      </Container>
-      {/* End footer */}
+
     </React.Fragment>
   );
 }

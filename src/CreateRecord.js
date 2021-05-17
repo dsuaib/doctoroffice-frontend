@@ -13,6 +13,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from 'react-router-dom';
 
+//Material UI styling
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -47,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateRecord() {
   const classes = useStyles();
+  
+  //useState to capture data in form
   const [dateInfo, setDateInfo] = useState('');
   const [diagnosisId, setDiagnosisId] = useState('');
   const [employeeId, setEmployeeId] = useState('');
@@ -55,10 +58,10 @@ export default function CreateRecord() {
   
   
   
-
+  //function to send info from form into to server
   const handleSubmit = e => {
     e.preventDefault();
-
+  //frontend error checking for invalid entry
     if (amountCharged < 0) {
         console.log('Amount Charged is a Negative Number. Payment not processed')
         alert('Amount Charged Cannot Be a Negative Number')
@@ -74,38 +77,41 @@ export default function CreateRecord() {
     }
 
     axios.post('http://localhost:8080/createrecord', record)
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(err => {
-            // what now?
-            console.log(err)
-        });
-    console.log(record)
+    .then(response => {
+      console.log(response.data)
+      alert('Appointment Record Submitted!')
+   })
+    .catch(err => {
+        alert(err)
+    });
+console.log(record)
   };
 
+/*display frontend interface styling*/  
   return (
  <div>     
 <AppBar position="static" style={{ backgroundColor: "#23395d"
 }} elevation={0} className={classes.appBar}>
     <Toolbar className={classes.toolbar}>
       <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-        Doctor Office System Management
+        Doctor Office Management System
       </Typography>
       
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Features
-        </Typography>
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Enterprise
-        </Typography>
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Support
-        </Typography>
-      
-      <Button href="#" color="primary" variant="outlined" className={classes.typography}>
-        Login
-      </Button>
+      <Link to="/view" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Search Record
+            </Typography>
+            </Link>
+            <Link to="/payment" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Submit Payment
+            </Typography>
+            </Link>
+            <Link to="/" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Home
+            </Typography>
+            </Link>
     </Toolbar>
   </AppBar>
     <Container component="main" maxWidth="xs">
@@ -194,7 +200,7 @@ export default function CreateRecord() {
             color="default"
             className={classes.submit}
           >
-            Submit Patient Record
+            Submit Appointment Record
           </Button>
         </form>
       </div>

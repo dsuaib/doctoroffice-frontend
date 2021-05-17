@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,6 +13,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from 'react-router-dom';
 
+//Material UI styling
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -45,11 +46,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateRecord() {
+export default function ViewRecord() {
   const classes = useStyles();
+  //useState to capture data in form
+  const [recordId, setRecordId] = useState('');
+  const [record, setRecord] = useState([]);
 
+
+  //function to send info from form into to server
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    const payload = {
+      recordId
+    }
+    axios.post('http://localhost:8080/patient', payload)
+    .then(res => {
+      setRecord([res.data.RecordID, res.data.Date, res.data.AmountCharged, res.data.DiagnosisID, res.data.EmployeeID, res.data.PatientID])
+      console.log(res.data)
+      alert('Search Submitted!')
+      if (typeof(res.data.RecordID) === "undefined") {
+        alert('Not a valid recordID')
+        console.log(typeof(res.data.RecordID))
+      }
+   })
+    .catch(err => {
+        alert(err)
+    });  
+  };
+
+/*display frontend interface styling*/  
   return (
- <div>     
+ <div>   
+   
 <AppBar position="static" style={{ backgroundColor: "#23395d"
 }} elevation={0} className={classes.appBar}>
     <Toolbar className={classes.toolbar}>
@@ -57,19 +86,21 @@ export default function CreateRecord() {
         Doctor Office Management System
       </Typography>
       
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Features
-        </Typography>
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Enterprise
-        </Typography>
-        <Typography variant="button" color="inherit" href="#" className={classes.typography}>
-          Support
-        </Typography>
-      
-      <Button href="#" color="primary" variant="outlined" className={classes.typography}>
-        Login
-      </Button>
+      <Link to="/create" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Create Appointment Record
+            </Typography>
+            </Link>
+            <Link to="/payment" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Submit Payment
+            </Typography>
+            </Link>
+            <Link to="/" style={{ textDecoration:'none', color:'#FFF'}}>
+            <Typography variant="button" color="inherit" href="#" className={classes.typography}>
+              Home
+            </Typography>
+            </Link>
     </Toolbar>
   </AppBar>
     <Container component="main" maxWidth="xs">
@@ -82,17 +113,20 @@ export default function CreateRecord() {
         <Typography component="h1" variant="h5">
           Search For Patient Record
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete="PatientID"
-                name="PatientID"
+                autoComplete="RecordID"
+                name="RecordID"
                 required
                 fullWidth
-                id="PatientID"
-                label="PatientID"
+                id="RecordID"
+                label="RecordID"
                 autoFocus
+                value={recordId}
+                onChange={e => setRecordId(e.target.value)}
+
               />
             </Grid>
           </Grid>
@@ -106,8 +140,50 @@ export default function CreateRecord() {
             Submit Search
           </Button>
         </form>
+    </div>
+    </Container>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Search Results Will Show Below:
+        </Typography>
+        <div className={classes.form}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} >
+            <Typography component="h1" variant="h5">
+            ID of Record: {record[0]}
+        </Typography>
+            </Grid>
+            <Grid item xs={12} >
+            <Typography component="h1" variant="h5">
+            Amount Charged (USD): {record[2]}
+        </Typography>
+            </Grid>
+            <Grid item xs={12} >
+            <Typography component="h1" variant="h5">
+            ID of Patient: {record[5]}
+        </Typography>
+            </Grid>
+            <Grid item xs={12}>
+            <Typography component="h1" variant="h5">
+            ID of Employee: {record[3]}
+        </Typography>
+            </Grid>
+            <Grid item xs={12}>
+            <Typography component="h1" variant="h5">
+            ID of Diagnosis: {record[4]}
+        </Typography>
+            </Grid>
+          </Grid>
+        </div>
       </div>
     </Container>
+
+
+
+    
+    
 </div>
   );
 }

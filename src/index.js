@@ -8,6 +8,8 @@ import CreateRecord from './CreateRecord'
 import ViewRecord from './ViewRecord'
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 
+
+//render componenet when path is reached
 ReactDOM.render(
   <BrowserRouter>
   <Switch>
